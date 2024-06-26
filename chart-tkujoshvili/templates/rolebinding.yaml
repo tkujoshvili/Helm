@@ -1,0 +1,19 @@
+{{- if .Values.serviceAccount.enabled }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ .Values.roleBinding.name }}
+  namespace: {{ .Values.namespace.name | quote }}
+  labels:
+    {{- range $key, $value := .Values.labels }}
+    {{ $key }}: {{ quote $value }}
+    {{- end }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ .Values.role.name }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ .Values.serviceAccount.name }}
+    namespace: {{ .Values.namespace.name }}
+{{- end }}

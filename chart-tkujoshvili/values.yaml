@@ -1,0 +1,54 @@
+labels:
+  app: teos-app
+  environment: studing
+
+namespace:
+  create: true
+  name: tkujoshvili
+  annotations:
+    description: "Namespace for teos application"
+    contact: "teo@teo.com"
+
+deployment:
+  name: web-server-tkujoshvili
+  replicaCount: 1
+  image:
+    repository: nginx
+    tag: latest
+  containername: nginx
+  containerPort: 80
+
+configmap:
+  create: true
+  name: index-html-configmap
+  data:
+    index.html: |-
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <title>Sample HTML Page</title>
+      </head>
+      <body>
+        <h1>Hello, World!</h1>
+        <p>This is a sample HTML page embedded in a ConfigMap using Helm and values.yaml.</p>
+      </body>
+      </html>
+
+serviceAccount:
+  enabled: true
+  name: tkujoshvili
+role:
+  name: tkujoshvili-role
+roleBinding:
+  name: tkujoshvili-role-binding
+
+service:
+  name: tkujoshvili-service
+  type: ClusterIP
+  port: 80
+  
+virtualService:
+  name: tkujoshvili-virtual-service
+  ingressGatewayName: istio-system/academy-ingress-gateway
+  host: tkujoshvili.com

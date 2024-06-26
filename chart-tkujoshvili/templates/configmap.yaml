@@ -1,0 +1,12 @@
+{{- if .Values.configmap.create }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.configmap.name | quote }}
+  namespace: {{ .Values.namespace.name | quote }}
+data:
+  {{- range $key, $value := .Values.configmap.data }}
+  {{ $key }}: |-
+{{ $value | indent 4 }}
+  {{- end }}
+{{- end }}
